@@ -1,0 +1,12 @@
+[package]
+name    = "ms_transcode"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ms_core   = { workspace = true }
+ms_signal = { workspace = true }
+tokio     = { workspace = true }
+anyhow    = { workspace = true }
+tracing   = { workspace = true }
+uuid      = { workspace = true }

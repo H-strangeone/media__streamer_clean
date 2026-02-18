@@ -1,0 +1,12 @@
+[package]
+name    = "wav_gen"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "wav_gen"
+path = "src/main.rs"
+
+[dependencies]
+ms_core   = { workspace = true }
+ms_signal = { workspace = true }

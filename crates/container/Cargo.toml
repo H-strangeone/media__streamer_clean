@@ -1,0 +1,10 @@
+[package]
+name    = "ms_container"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ms_core    = { workspace = true }
+ms_storage = { workspace = true }
+anyhow     = { workspace = true }
+uuid       = { workspace = true }

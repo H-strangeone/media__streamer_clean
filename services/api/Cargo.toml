@@ -1,0 +1,24 @@
+[package]
+name    = "api"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "api"
+path = "src/main.rs"
+
+[dependencies]
+ms_core      = { workspace = true }
+ms_storage   = { workspace = true }
+ms_container = { workspace = true }
+ms_transcode = { workspace = true }
+tokio        = { workspace = true }
+axum         = { workspace = true }
+tower-http   = { workspace = true }
+serde        = { workspace = true }
+serde_json   = { workspace = true }
+anyhow       = { workspace = true }
+tracing      = { workspace = true }
+tracing-subscriber = { workspace = true }
+uuid         = { workspace = true }
+dotenvy      = { workspace = true }

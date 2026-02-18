@@ -1,6 +1,80 @@
-[package]
-name = "media__streamer_clean"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+resolver = "2"
 
-[dependencies]
+members = [
+    "crates/core",
+    "crates/signal",
+    "crates/transform",
+    "crates/transcode",
+    "crates/storage",
+    "crates/container",
+    "services/api",
+    "services/worker",
+    "tools/wav_gen",
+]
+
+[workspace.dependencies]
+# async runtime
+tokio      = { version = "1.40", features = ["full"] }
+tokio-util = { version = "0.7" }
+
+# web framework
+axum       = { version = "0.7", features = ["multipart", "macros"] }
+tower      = { version = "0.5" }
+tower-http = { version = "0.6", features = ["cors", "trace", "compression-gzip"] }
+
+# serialization
+serde      = { version = "1", features = ["derive"] }
+serde_json = { version = "1" }
+
+# error handling
+thiserror = { version = "2" }
+anyhow    = { version = "1" }
+
+# logging
+tracing            = { version = "0.1" }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# database — sqlite for dev, postgres for prod, same code
+sqlx = { version = "0.8", features = [
+    "runtime-tokio", "sqlite", "postgres", "uuid", "time",
+]}
+
+# redis — declared now, wired in when worker needs it
+redis = { version = "0.27", features = ["tokio-comp", "connection-manager"] }
+
+# encryption
+aes  = { version = "0.8" }
+cbc  = { version = "0.1" }
+rand = { version = "0.8" }
+hex  = { version = "0.4" }
+
+# http client (for cloud storage later)
+reqwest = { version = "0.12", features = ["json", "stream", "multipart"] }
+
+# config
+dotenvy = { version = "0.15" }
+
+# ids and time
+uuid = { version = "1", features = ["v4", "serde"] }
+time = { version = "0.3", features = ["serde"] }
+
+# internal crates — how crates depend on each other
+ms_core      = { path = "crates/core" }
+ms_signal    = { path = "crates/signal" }
+ms_transform = { path = "crates/transform" }
+ms_transcode = { path = "crates/transcode" }
+ms_storage   = { path = "crates/storage" }
+ms_container = { path = "crates/container" }
+
+[profile.release]
+opt-level     = 3
+lto           = true
+codegen-units = 1
+panic         = "abort"
+strip         = true
+
+[profile.dev]
+opt-level = 1
+# 1 instead of 0 because DSP math (sin, FFT loops) is 50x slower at 0.
+# You'd think your code is broken when it's just unoptimized.
